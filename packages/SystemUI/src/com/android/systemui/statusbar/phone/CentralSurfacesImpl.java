@@ -140,9 +140,9 @@ import com.android.systemui.InitController;
 import com.android.systemui.Prefs;
 import com.android.systemui.R;
 import com.android.systemui.accessibility.floatingmenu.AccessibilityFloatingMenuController;
+import com.android.systemui.ambientmusic.AmbientIndicationContainer;
 import com.android.systemui.animation.ActivityLaunchAnimator;
 import com.android.systemui.animation.DelegateLaunchAnimatorController;
-import com.android.systemui.ambientmusic.AmbientIndicationContainer;
 import com.android.systemui.assist.AssistManager;
 import com.android.systemui.biometrics.AuthRippleController;
 import com.android.systemui.broadcast.BroadcastDispatcher;
@@ -3266,6 +3266,10 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
         mNotificationPanelViewController.setDozing(mDozing, animate);
         mPulseController.setDozing(mDozing);
         updateQsExpansionEnabled();
+        if (mAmbientIndicationContainer != null) {
+            ((AmbientIndicationContainer)mAmbientIndicationContainer)
+                    .updateDozingState(mDozing);
+        }
         Trace.endSection();
     }
 
@@ -4439,6 +4443,10 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
                     updateScrimController();
                     mPresenter.updateMediaMetaData(false, mState != StatusBarState.KEYGUARD);
                     mPulseController.setKeyguardShowing(mState == StatusBarState.KEYGUARD);
+                    if (mAmbientIndicationContainer != null) {
+                        ((AmbientIndicationContainer)mAmbientIndicationContainer)
+                                .updateKeyguardState(mState == StatusBarState.KEYGUARD);
+                    }
                     Trace.endSection();
                 }
 
